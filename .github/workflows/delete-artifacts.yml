@@ -1,11 +1,19 @@
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   delete-artifacts:
     runs-on: ubuntu-22.04
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
+        with:
+          egress-policy: audit
+
       - name: Remove artifacts with dev version
-        uses: geekyeggo/delete-artifact@v5
+        uses: geekyeggo/delete-artifact@f275313e70c08f6120db482d7a6b98377786765b # v5.1.0
         with:
           name: '*.build'
