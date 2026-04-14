@@ -41,6 +41,11 @@ jobs:
     outputs:
       bump_sha: ${{ steps.get-bump-commit-sha.outputs.bump_sha }}
     steps:
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
+      with:
+        egress-policy: audit
+
     - uses: actions/checkout@v4
       with:
         token: ${{ secrets.CLIENT_BOT_PAT }}
@@ -52,7 +57,7 @@ jobs:
         new_version: ${{ inputs.new_version }}
 
     - name: Commit new version
-      uses: stefanzweifel/git-auto-commit-action@v4
+      uses: stefanzweifel/git-auto-commit-action@3ea6ae190baf489ba007f7c92608f33ce20ef04a # v4.16.0
       with:
         commit_message: 'Auto-bump version to ${{ inputs.new_version }} [skip ci]'
         commit_author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
