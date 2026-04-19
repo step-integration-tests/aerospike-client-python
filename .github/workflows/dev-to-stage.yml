@@ -13,6 +13,11 @@ jobs:
       run_stage_tests: ${{ steps.run_stage_tests.outputs.run_stage_tests }}
     runs-on: ubuntu-22.04
     steps:
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@6c3c2f2c1c457b00c10c4848d6f5491db3b629df # v2.18.0
+      with:
+        egress-policy: audit
+
     - uses: actions/checkout@v4
       with:
         # Get all tags
