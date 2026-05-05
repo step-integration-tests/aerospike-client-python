@@ -21,6 +21,11 @@ jobs:
     name: Upload artifacts to JFrog
     runs-on: ubuntu-22.04
     steps:
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@a5ad31d6a139d249332a2605b85202e8c0b78450 # v2.19.1
+      with:
+        egress-policy: audit
+
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
@@ -29,7 +34,7 @@ jobs:
         path: artifacts
 
     - name: Set up JFrog credentials
-      uses: jfrog/setup-jfrog-cli@v3
+      uses: jfrog/setup-jfrog-cli@0f30b43d62ccad81fba40748d2c671c4665b2d27 # v3.5.3
       env:
         JF_URL: ${{ secrets.JFROG_PLATFORM_URL }}
         JF_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
