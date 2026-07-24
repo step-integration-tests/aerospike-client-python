@@ -40,6 +40,11 @@ jobs:
     runs-on: ubuntu-22.04
     needs: build-artifacts
     steps:
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+      with:
+        egress-policy: audit
+
     - name: Download and store all artifacts to single folder
       uses: actions/download-artifact@v4
       with:
@@ -48,7 +53,7 @@ jobs:
 
     # TODO: fix
     - name: Publish package distributions to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
+      uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247 # release/v1
       with:
         packages-dir: artifacts/
         password: ${{ secrets.PYPI_API_TOKEN }}
