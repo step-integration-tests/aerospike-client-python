@@ -24,10 +24,20 @@ on:
       CLIENT_BOT_PAT:
         required: true
 
+permissions:
+  contents: read
+
 jobs:
   merge:
+    permissions:
+      contents: write  # for Git to git push
     runs-on: ubuntu-22.04
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c # v2.21.0
+        with:
+          egress-policy: audit
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
